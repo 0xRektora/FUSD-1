@@ -7,7 +7,7 @@ async function main() {
   // await hre.run('deploy', { tags: 'KingReserveDAIOracle' });
   // await hre.run('deploy', { tags: 'KingReserveUSDTOracle' });
 
-  const waitConfirmations = hre.network.live ? 12 : 1;
+  const waitConfirmations = hre.network.live ? 15 : 1;
 
   const deployments = hre.deployments;
   const USTOracle = await deployments.get('KingReserveUSTOracle');
@@ -16,7 +16,7 @@ async function main() {
   const DAIOracle = await deployments.get('KingReserveDAIOracle');
   const USDTOracle = await deployments.get('KingReserveUSDTOracle');
 
-  const king = await hre.ethers.getContractAt('King', '0x196Cb6265ce6292f859CD58736605131F76D4c8a');
+  const king = await hre.ethers.getContractAt('King', '0xd4c77789E7700A23259c30e3f087371615E6DF65');
   const sFrg = '0x7Ea6E87789C40084030b2289C89fdA723Bd91117'; // Takes 10% burning tax
   console.log('Updating sFrg')
   await (await king.updateSFrgKingdom(sFrg)).wait();

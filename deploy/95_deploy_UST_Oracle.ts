@@ -8,7 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deploy('KingReserveUSTOracle', {
     contract:'KingReserveStableOracle',
-    waitConfirmations: hre.network.live ? 12 : 1,
+    waitConfirmations: hre.network.live ? 30 : 1,
     gasPrice: (await hre.ethers.provider.getGasPrice()).mul(2),
     from: deployer,
     log: true,
@@ -20,7 +20,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       const oracle = await deployments.get('KingReserveUSTOracle');
       await hre.run('verify', { network: 'mainnet', address: oracle.address,constructorArgsParams: ['0x6f3dd0ec672871547ea495dcf7aa963b8a179287'] });
     } catch (err) {
-      console.log(err);
+      console.log(String(err).split('\n')[0]);
     }
   }
 };
