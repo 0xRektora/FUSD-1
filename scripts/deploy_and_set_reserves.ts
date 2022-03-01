@@ -1,11 +1,13 @@
 import hre, { ethers } from 'hardhat';
 
 async function main() {
-  await hre.run('deploy', { tags: 'KingReserveUSTOracle' });
-  await hre.run('deploy', { tags: 'KingReserveFRAXOracle' });
-  await hre.run('deploy', { tags: 'KingReserveUSDCOracle' });
-  await hre.run('deploy', { tags: 'KingReserveDAIOracle' });
-  await hre.run('deploy', { tags: 'KingReserveUSDTOracle' });
+  // await hre.run('deploy', { tags: 'KingReserveUSTOracle' });
+  // await hre.run('deploy', { tags: 'KingReserveFRAXOracle' });
+  // await hre.run('deploy', { tags: 'KingReserveUSDCOracle' });
+  // await hre.run('deploy', { tags: 'KingReserveDAIOracle' });
+  // await hre.run('deploy', { tags: 'KingReserveUSDTOracle' });
+
+  const waitConfirmations = hre.network.live ? 12 : 1;
 
   const deployments = hre.deployments;
   const USTOracle = await deployments.get('KingReserveUSTOracle');
@@ -14,10 +16,11 @@ async function main() {
   const DAIOracle = await deployments.get('KingReserveDAIOracle');
   const USDTOracle = await deployments.get('KingReserveUSDTOracle');
 
-  const king = await hre.ethers.getContractAt('King', '0xF531FfF3BDF241Bd361C8531882faEFeDd594f26');
+  const king = await hre.ethers.getContractAt('King', '0x196Cb6265ce6292f859CD58736605131F76D4c8a');
   const sFrg = '0x7Ea6E87789C40084030b2289C89fdA723Bd91117'; // Takes 10% burning tax
+  console.log('Updating sFrg')
   await (await king.updateSFrgKingdom(sFrg)).wait();
-
+  
   const mintingInterestRateInBps = 1000;
   const burningTaxRateInBps = 2000;
   const vestingPeriodInBlocks = (60 * 60 * 24 * 30 * 6) / 2; // 6 months (FTM => 1 block = 2sec)
@@ -25,7 +28,8 @@ async function main() {
   const isReproveWhitelistedTrue = true;
   const isReproveWhitelistedFalse = false;
   const sFrgTaxRate = 1000;
-
+  
+  console.log('Blessing UST')
   // UST
   const USTAddr = '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9';
   await (
@@ -39,8 +43,9 @@ async function main() {
       isReproveWhitelistedTrue,
       sFrgTaxRate,
     )
-  ).wait();
+  ).wait(waitConfirmations);
 
+  console.log('Blessing FRAX')
   // FRAX
   const FRAXAddr = '0xdc301622e621166bd8e82f2ca0a26c13ad0be355';
   await (
@@ -54,8 +59,9 @@ async function main() {
       isReproveWhitelistedTrue,
       sFrgTaxRate,
     )
-  ).wait();
+  ).wait(waitConfirmations);
 
+  console.log('Blessing USDC')
   // USDC
   const USDCAddr = '0x04068da6c83afcfa0e13ba15a6696662335d5b75';
   await (
@@ -69,8 +75,9 @@ async function main() {
       isReproveWhitelistedFalse,
       sFrgTaxRate,
     )
-  ).wait();
+  ).wait(waitConfirmations);
 
+  console.log('Blessing DAI')
   // DAI
   const DAIAddr = '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e';
   await (
@@ -84,8 +91,9 @@ async function main() {
       isReproveWhitelistedFalse,
       sFrgTaxRate,
     )
-  ).wait();
+  ).wait(waitConfirmations);
 
+  console.log('Blessing USDT')
   // USDT
   const USDTAddr = '0x049d68029688eabf473097a2fc38ef61633a3c7a';
   await (
@@ -99,7 +107,7 @@ async function main() {
       isReproveWhitelistedFalse,
       sFrgTaxRate,
     )
-  ).wait();
+  ).wait(waitConfirmations);
 }
 
 main()
