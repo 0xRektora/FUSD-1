@@ -27,7 +27,6 @@ contract KingReserveStableOracle {
             exchanged = exchanged * 10**(18 - decimals);
         }
 
-        // We multiply by amount at last, we lose precision but prevent overflow
-        return ((latestAnswer * exchanged) / (1e18 * (10**(decimals - 1)))) * amount;
+        return ((((latestAnswer * exchanged) * amount) / (1e18 * (10**(decimals)))));
     }
 }
