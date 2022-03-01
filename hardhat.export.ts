@@ -38,10 +38,14 @@ const config: HardhatUserConfig = {
           : [],
     },
     mainnet: {
-      gasMultiplier: 2,
       live: true,
       url: process.env.MAINNET || '',
       chainId: Number(process.env.CHAIN_ID || 1),
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    testnet: {
+      url: 'https://rpc.testnet.fantom.network/',
+      chainId: 0xfa2,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
