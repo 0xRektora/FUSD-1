@@ -317,7 +317,8 @@ contract King {
         reserveExists(_reserve)
         returns (uint256)
     {
-        return (_amount * 10) / reserves[_reserve].reserveOracle.getExchangeRate(10);
+        // Uses 1e8 for precision
+        return (_amount * 1e8) / reserves[_reserve].reserveOracle.getExchangeRate(1e8);
     }
 
     /// @notice Withdraw [[_to]] a given [[_amount]] of [[_reserve]] and reset its freeReserves
