@@ -7,7 +7,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
 
   await deploy('KingReserveUSDCOracle', {
-    contract:'KingReserveStableOracle',
+    contract:'KingReserveUSDCOracle',
     waitConfirmations: hre.network.live ? 30 : 1,
     gasPrice: (await hre.ethers.provider.getGasPrice()).mul(2),
     from: deployer,
